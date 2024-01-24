@@ -156,7 +156,24 @@ public class EnhetstestBankController {
     @Test
     public void hentBetalinger_loggetInn(){
 
+        //arrange
+        List<Transaksjon> hentBetalinger = new ArrayList<>();
+        Transaksjon enTransaksjon = new Transaksjon(1, "324098234", 500, "11.12.2024", "Yo", "???", "12340232");
+
+        hentBetalinger.add(enTransaksjon);
+
+        when(sjekk.loggetInn()).thenReturn("302948320");
+        when(repository.hentBetalinger((anyString()))).thenReturn(hentBetalinger);
+
+
+        //act
+        List<Transaksjon> hentBetalinger1 = bankController.hentBetalinger();
+
+        //assert
+        assertEquals(hentBetalinger1, hentBetalinger);
+
     }
+
 
     @Test
     public void hentBetalinger_IkkeLoggetInn(){
