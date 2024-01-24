@@ -154,36 +154,55 @@ public class EnhetstestBankController {
 
     // ......................... HentBetalinger ..................... //
     @Test
-    public void hentBetalinger_loggetInn(){
+    public void hentbetaling(){
+        List<Transaksjon> Regbet = new ArrayList<>();
+        Transaksjon Trans1 = new Transaksjon(1, "029382173943", 456.32, "02.06.1998", "Hei", "?", "74837263781");
+        Transaksjon Trans2 = new Transaksjon(2, "029783239489", 4200.99, "30.02.2012", "Hallo", "???", "82398239823");
+        Regbet.add(Trans1);
+        Regbet.add(Trans2);
 
-        //arrange
-        List<Transaksjon> hentBetalinger = new ArrayList<>();
-        Transaksjon enTransaksjon = new Transaksjon(1, "324098234", 500, "11.12.2024", "Yo", "???", "12340232");
+        when(sjekk.loggetInn()).thenReturn("01010110523");
 
-        hentBetalinger.add(enTransaksjon);
+        //mulig denne må endres til then return transaksjon?
+        when(repository.hentBetalinger((anyString()))).thenReturn(Regbet);
 
-        when(sjekk.loggetInn()).thenReturn("302948320");
-        when(repository.hentBetalinger((anyString()))).thenReturn(hentBetalinger);
+        // må putte resulatet i en list
+        List<Transaksjon> resultat = bankController.hentBetalinger();
+        // må sammenligne med en list
 
-
-        //act
-        List<Transaksjon> hentBetalinger1 = bankController.hentBetalinger();
-
-        //assert
-        assertEquals(hentBetalinger1, hentBetalinger);
-
+        assertEquals(Regbet, resultat);
     }
-
 
     @Test
-    public void hentBetalinger_IkkeLoggetInn(){
+    public void ikkelogget_hentbetaling(){
 
+        when(sjekk.loggetInn()).thenReturn(null);
+
+        // act
+        List<Transaksjon> entrans = bankController.hentBetalinger();
+
+        // assert
+        assertNull(entrans);
     }
+
 
     // ......................... utforBetaling ..................... //
     @Test
-    public void utforBetaling_loggetInn(){
+    public void utforbetaling_loggetinn(){
 
+        List<Transaksjon> Regbet = new ArrayList<>();
+        Transaksjon Trans1 = new Transaksjon(1, "029382173943", 456.32, "02.06.1998", "Hei", "?", "74837263781");
+        Transaksjon Trans2 = new Transaksjon(2, "029783239489", 4200.99, "30.02.2012", "Hallo", "???", "82398239823");
+        Regbet.add(Trans1);
+        Regbet.add(Trans2);
+
+        when(sjekk.loggetInn()).thenReturn("029382173943");
+
+        when(repository.utforBetaling(1)).thenReturn("029382173943");
+
+        String resultat = repository.utforBetaling(1);
+
+        assertEquals("029382173943",resultat);
     }
 
     @Test
