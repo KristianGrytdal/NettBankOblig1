@@ -58,8 +58,20 @@ public class EnhetstestAdminKundeController {
 
     }
     @Test
-    public void endre_loggetInn(){}
+    public void endre_loggetInn(){
 
+        //arrange
+        Kunde enKunde = new Kunde("403975", "Tia", "Mahadia", "Falck Yttersplass 5", "1234", "Oslo", "97463526", "heloooo");
+
+        when(sjekk.loggetInn()).thenReturn(String.valueOf(enKunde));
+        when(repository.endreKundeInfo(any())).thenReturn(enKunde.toString());
+
+        //act
+        String resultat = adminKundeController.endre(enKunde);
+
+        //assert
+        assertEquals(enKunde.toString(), resultat);
+    }
     @Test
     public void hentAlle_ikkeLoggetInn(){
         // arrange
