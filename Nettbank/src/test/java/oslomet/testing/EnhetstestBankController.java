@@ -16,8 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -156,13 +155,13 @@ public class EnhetstestBankController {
 
         when(sjekk.loggetInn()).thenReturn("01010110523");
 
-        when(repository.registrerBetaling((any(Transaksjon.class)))).thenReturn("OK");
+        when(repository.registrerBetaling(Trans1)).thenReturn("OK");
 
         // act
-        List<Transaksjon> resultat = bankController.utforBetaling(1);
+        String resultat = bankController.registrerBetaling(Trans1);
 
         // assert
-        assertEquals(Trans1, resultat);
+        assertEquals("OK", resultat);
     }
 
     @Test
@@ -223,11 +222,13 @@ public class EnhetstestBankController {
 
         when(sjekk.loggetInn()).thenReturn("029382173943");
 
-        when(repository.utforBetaling(1)).thenReturn("029382173943");
+        when(repository.utforBetaling(1)).thenReturn("OK");
 
-        String resultat = repository.utforBetaling(1);
+        when(repository.hentBetalinger(anyString())).thenReturn(Regbet);
 
-        assertEquals("029382173943",resultat);
+        List<Transaksjon> resultat = bankController.utforBetaling(1);
+
+        assertEquals(Regbet,resultat);
     }
 
     @Test
