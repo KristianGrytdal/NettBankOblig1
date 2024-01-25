@@ -68,7 +68,6 @@ public class EnhetstestBankController {
         //act
         Konto kontoResultat = bankController.hentTransaksjoner("kontonr", "43532", "343534");
 
-
         //assert
         assertNull(kontoResultat);
     }
@@ -123,7 +122,7 @@ public class EnhetstestBankController {
 
         when(sjekk.loggetInn()).thenReturn("01010110523");
 
-        when(repository.hentKonti(anyString())).thenReturn(Saldi);
+        when(repository.hentSaldi(anyString())).thenReturn(Saldi);
 
         // act
         List<Konto> resultat = bankController.hentSaldi();
