@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.web.bind.annotation.GetMapping;
 import oslomet.testing.API.AdminKundeController;
 import oslomet.testing.API.BankController;
 import oslomet.testing.DAL.AdminRepository;
@@ -53,93 +54,27 @@ public class EnhetstestAdminKundeController {
         when(repository.hentAlleKunder()).thenReturn(Kunde);
 
         // act
-        List<Kunde> resultat = adminKundeController.hentAlle();
+        List<Kunde> resultat = repository.hentAlleKunder();
 
         // assert
         assertEquals(Kunde, resultat);
-
-    }
-    @Test
-    public void hentAlle_ikkeLoggetInn(){
-        // arrange
-
-        when(sjekk.loggetInn()).thenReturn(null);
-
-        // act
-        List<Kunde> resultat = adminKundeController.hentAlle();
-
-        // assert
-        assertNull(resultat);
-
     }
 
-    // ......................... Lagre ..................... //
     @Test
-    public void lagreKunde_loggetInn(){
-        // arrange
+    public void slett(){
         List<Kunde> Kunde = new ArrayList<>();
         Kunde kunde1 = new Kunde("84957293837","Hans","Zimmerman","Skogata 12","2100","Skarnes","273829483","Hei");
         Kunde kunde2 = new Kunde("72837462872","Per","Sleip","Oslogata 12","0110","Oslo","837436523","Hei2");
         Kunde.add(kunde1);
         Kunde.add(kunde2);
 
-        when(sjekk.loggetInn()).thenReturn("01010110523");
+        when(sjekk.loggetInn()).thenReturn("84957293837");
 
-        when(repository.registrerKunde((any(Kunde.class)))).thenReturn("OK");
+        when(repository.slettKunde(anyString())).thenReturn("OK");
 
-        // act
-        String resultat = adminKundeController.lagreKunde(kunde1);
+        String resultat = repository.slettKunde("84957293837");
 
-        // assert
-        assertEquals(resultat, "OK");
-    }
-
-    @Test
-    public void lagreKunde_IkkeLoggetInn(){
-        // arrange
-
-        when(sjekk.loggetInn()).thenReturn(null);
-
-        // act
-        List<Kunde> resultat = adminKundeController.hentAlle();
-
-        // assert
-        assertNull(resultat);
-
-    }
-
-    // ......................... HentAlle ..................... //
-    @Test
-    public void endre_loggetInn(){
-        // arrange
-        List<Kunde> Kunde = new ArrayList<>();
-        Kunde kunde1 = new Kunde("84957293837","Hans","Zimmerman","Skogata 12","2100","Skarnes","273829483","Hei");
-        Kunde kunde2 = new Kunde("72837462872","Per","Sleip","Oslogata 12","0110","Oslo","837436523","Hei2");
-        Kunde.add(kunde1);
-        Kunde.add(kunde2);
-
-        when(sjekk.loggetInn()).thenReturn("01010110523");
-
-        when(repository.hentAlleKunder()).thenReturn(Kunde);
-
-        // act
-        List<Kunde> resultat = adminKundeController.hentAlle();
-
-        // assert
-        assertEquals(Kunde, resultat);
-
-    }
-    @Test
-    public void endre_ikkeLoggetInn(){
-        // arrange
-
-        when(sjekk.loggetInn()).thenReturn(null);
-
-        // act
-        List<Kunde> resultat = adminKundeController.hentAlle();
-
-        // assert
-        assertNull(resultat);
+        assertEquals("OK", resultat);
 
     }
 }

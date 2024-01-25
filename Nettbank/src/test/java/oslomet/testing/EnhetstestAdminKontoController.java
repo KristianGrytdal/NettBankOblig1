@@ -25,7 +25,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class EnhetstestAdminKundeController {
+public class EnhetstestAdminKontoController {
 
     @InjectMocks
     // denne skal testes
@@ -54,7 +54,7 @@ public class EnhetstestAdminKundeController {
         when(repository.hentAlleKunder()).thenReturn(Kunde);
 
         // act
-        List<Kunde> resultat = adminKontoController.hentAlleKonti();
+        List<Konto> resultat = adminKontoController.hentAlleKonti();
 
         // assert
         assertEquals(Kunde, resultat);
@@ -67,7 +67,7 @@ public class EnhetstestAdminKundeController {
         when(sjekk.loggetInn()).thenReturn(null);
 
         // act
-        List<Kunde> resultat = adminKontoController.hentAlleKonti();
+        List<Konto> resultat = adminKontoController.hentAlleKonti();
 
         // assert
         assertNull(resultat);
