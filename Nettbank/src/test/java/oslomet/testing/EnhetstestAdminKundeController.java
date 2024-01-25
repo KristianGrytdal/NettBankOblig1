@@ -91,7 +91,19 @@ public class EnhetstestAdminKundeController {
         // assert
         assertEquals(resultat, "OK");
     }
+    @Test
+    public void lagreKunde_IkkeLoggetInn(){
+        // arrange
 
+        when(sjekk.loggetInn()).thenReturn(null);
+
+        // act
+        List<Kunde> resultat = adminKundeController.hentAlle();
+
+        // assert
+        assertNull(resultat);
+
+    }
     // ......................... HentAlle ..................... //
     @Test
     public void hentAlle_loggetInn(){
@@ -128,6 +140,20 @@ public class EnhetstestAdminKundeController {
         String resultat = repository.slettKunde("84957293837");
 
         assertEquals("OK", resultat);
+    }
+
+    @Test
+    public void ikkeloggetinn_slett(){
+
+        when(sjekk.loggetInn()).thenReturn(null);
+
+        // act
+        String resultat = adminKundeController.slett("8938595");
+
+        // assert
+        assertNull(resultat);
 
     }
+
+
 }
