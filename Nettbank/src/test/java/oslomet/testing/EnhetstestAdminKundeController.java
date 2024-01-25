@@ -94,11 +94,11 @@ public class EnhetstestAdminKundeController {
     @Test
     public void lagreKunde_IkkeLoggetInn(){
         // arrange
-
+        Kunde kunde1 = new Kunde("84957293837","Hans","Zimmerman","Skogata 12","2100","Skarnes","273829483","Hei");
         when(sjekk.loggetInn()).thenReturn(null);
 
         // act
-        List<Kunde> resultat = adminKundeController.hentAlle();
+        String resultat = adminKundeController.lagreKunde(kunde1);
 
         // assert
         assertNull(resultat);
@@ -116,7 +116,7 @@ public class EnhetstestAdminKundeController {
 
         when(sjekk.loggetInn()).thenReturn("01010110523");
 
-        when(repository.hentAlleKunder()).thenReturn(Kunde);
+        when(repository.endreKundeInfo(any(Kunde.class))).thenReturn("OK");
 
         // act
         List<Kunde> resultat = repository.hentAlleKunder();
@@ -126,7 +126,7 @@ public class EnhetstestAdminKundeController {
     }
 
     @Test
-    public void slett(){
+    public void slett_loggetInn(){
         List<Kunde> Kunde = new ArrayList<>();
         Kunde kunde1 = new Kunde("84957293837","Hans","Zimmerman","Skogata 12","2100","Skarnes","273829483","Hei");
         Kunde kunde2 = new Kunde("72837462872","Per","Sleip","Oslogata 12","0110","Oslo","837436523","Hei2");
@@ -143,7 +143,7 @@ public class EnhetstestAdminKundeController {
     }
 
     @Test
-    public void ikkeloggetinn_slett(){
+    public void Slett_ikkeloggetinn(){
 
         when(sjekk.loggetInn()).thenReturn(null);
 

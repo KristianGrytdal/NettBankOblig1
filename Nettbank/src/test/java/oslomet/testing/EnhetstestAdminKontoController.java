@@ -43,21 +43,21 @@ public class EnhetstestAdminKontoController {
     @Test
     public void hentAlleKonti_loggetInn(){
         // arrange
-        List<Kunde> Kunde = new ArrayList<>();
-        Kunde kunde1 = new Kunde("84957293837","Hans","Zimmerman","Skogata 12","2100","Skarnes","273829483","Hei");
-        Kunde kunde2 = new Kunde("72837462872","Per","Sleip","Oslogata 12","0110","Oslo","837436523","Hei2");
-        Kunde.add(kunde1);
-        Kunde.add(kunde2);
+        List<Konto> Konto = new ArrayList<>();
+        Konto konto1 = new Konto("83948773849","7384938320",23.32, "Spare","NOK",null);
+        Konto konto2 = new Konto("72837462872","7384901234", 45.54,"Fest","Swe",null);
+        Konto.add(konto1);
+        Konto.add(konto2);
 
         when(sjekk.loggetInn()).thenReturn("01010110523");
 
-        when(repository.hentAlleKunder()).thenReturn(Kunde);
+        when(repository.hentAlleKonti()).thenReturn(Konto);
 
         // act
         List<Konto> resultat = adminKontoController.hentAlleKonti();
 
         // assert
-        assertEquals(Kunde, resultat);
+        assertEquals(Konto, resultat);
 
     }
     @Test
@@ -78,18 +78,19 @@ public class EnhetstestAdminKontoController {
     @Test
     public void registrerKonto_loggetInn(){
         // arrange
-        List<Kunde> Kunde = new ArrayList<>();
-        Kunde kunde1 = new Kunde("84957293837","Hans","Zimmerman","Skogata 12","2100","Skarnes","273829483","Hei");
-        Kunde kunde2 = new Kunde("72837462872","Per","Sleip","Oslogata 12","0110","Oslo","837436523","Hei2");
-        Kunde.add(kunde1);
-        Kunde.add(kunde2);
+        List<Konto> Konto = new ArrayList<>();
+        Konto konto1 = new Konto("83948773849","7384938320",23.32, "Spare","NOK",null);
+        Konto konto2 = new Konto("72837462872","7384901234", 45.54,"Fest","Swe",null);
+        Konto konto3 = new Konto("72837456872","7384923434", 45.57,"Festing","Dnk",null);
+        Konto.add(konto1);
+        Konto.add(konto2);
 
         when(sjekk.loggetInn()).thenReturn("01010110523");
 
-        when(repository.registrerKunde((any(Kunde.class)))).thenReturn("OK");
+        when(repository.registrerKonto((any(Konto.class)))).thenReturn("OK");
 
         // act
-        String resultat = adminKontoController.lagreKunde(kunde1);
+        String resultat = adminKontoController.registrerKonto(konto3);
 
         // assert
         assertEquals(resultat, "OK");
@@ -98,11 +99,16 @@ public class EnhetstestAdminKontoController {
     @Test
     public void registerKonto_IkkeLoggetInn(){
         // arrange
-
-        when(sjekk.loggetInn()).thenReturn(null);
+        List<Konto> Konto = new ArrayList<>();
+        Konto konto1 = new Konto("83948773849","7384938320",23.32, "Spare","NOK",null);
+        Konto konto2 = new Konto("72837462872","7384901234", 45.54,"Fest","Swe",null);
+        Konto konto3 = new Konto("72837456872","7384923434", 45.57,"Festing","Dnk",null);
+        Konto.add(konto1);
+        Konto.add(konto2);
+        when(sjekk.loggetInn()).thenReturn("Ikke innlogget");
 
         // act
-        List<Kunde> resultat = adminKontoController.hentAlle();
+        String resultat = adminKontoController.registrerKonto(konto3);
 
         // assert
         assertNull(resultat);
@@ -113,31 +119,78 @@ public class EnhetstestAdminKontoController {
     @Test
     public void endreKonto_loggetInn(){
         // arrange
-        List<Kunde> Kunde = new ArrayList<>();
-        Kunde kunde1 = new Kunde("84957293837","Hans","Zimmerman","Skogata 12","2100","Skarnes","273829483","Hei");
-        Kunde kunde2 = new Kunde("72837462872","Per","Sleip","Oslogata 12","0110","Oslo","837436523","Hei2");
-        Kunde.add(kunde1);
-        Kunde.add(kunde2);
+        List<Konto> Konto = new ArrayList<>();
+        Konto konto1 = new Konto("83948773849","7384938320",23.32, "Spare","NOK",null);
+        Konto konto2 = new Konto("72837462872","7384901234", 45.54,"Fest","Swe",null);
+        Konto konto3 = new Konto("72837456872","7384923434", 45.57,"Festing","Dnk",null);
+        Konto.add(konto1);
+        Konto.add(konto2);
 
         when(sjekk.loggetInn()).thenReturn("01010110523");
 
-        when(repository.endreKundeInfo(any(Kunde.class))).thenReturn("OK");
+        when(repository.endreKonto(any(Konto.class))).thenReturn("OK");
 
         // act
-        List<Kunde> resultat = adminKontoController.endre("Hans");
+        String resultat = adminKontoController.endreKonto(konto1);
 
         // assert
-        assertEquals(Kunde, resultat);
+        assertEquals("OK", resultat);
 
     }
     @Test
     public void endreKonto_ikkeLoggetInn(){
         // arrange
-
-        when(sjekk.loggetInn()).thenReturn(null);
+        List<Konto> Konto = new ArrayList<>();
+        Konto konto1 = new Konto("83948773849","7384938320",23.32, "Spare","NOK",null);
+        Konto konto2 = new Konto("72837462872","7384901234", 45.54,"Fest","Swe",null);
+        Konto konto3 = new Konto("72837456872","7384923434", 45.57,"Festing","Dnk",null);
+        Konto.add(konto1);
+        Konto.add(konto2);
+        when(sjekk.loggetInn()).thenReturn("ikke inlogget");
 
         // act
-        List<Kunde> resultat = adminKontoController.hentAlle();
+        String resultat = adminKontoController.endreKonto(konto1);
+
+        // assert
+        assertNull(resultat);
+
+    }
+
+    // ......................... SlettKonto ..................... //
+    @Test
+    public void slettKonto_loggetInn(){
+        // arrange
+        List<Konto> Konto = new ArrayList<>();
+        Konto konto1 = new Konto("83948773849","7384938320",23.32, "Spare","NOK",null);
+        Konto konto2 = new Konto("72837462872","7384901234", 45.54,"Fest","Swe",null);
+        Konto konto3 = new Konto("72837456872","7384923434", 45.57,"Festing","Dnk",null);
+        Konto.add(konto1);
+        Konto.add(konto2);
+
+        when(sjekk.loggetInn()).thenReturn("01010110523");
+
+        when(repository.slettKonto(anyString())).thenReturn("OK");
+
+        // act
+        String resultat = adminKontoController.slettKonto("7384938320");
+
+        // assert
+        assertEquals("OK", resultat);
+
+    }
+    @Test
+    public void slettKonto_ikkeLoggetInn(){
+        // arrange
+        List<Konto> Konto = new ArrayList<>();
+        Konto konto1 = new Konto("83948773849","7384938320",23.32, "Spare","NOK",null);
+        Konto konto2 = new Konto("72837462872","7384901234", 45.54,"Fest","Swe",null);
+        Konto konto3 = new Konto("72837456872","7384923434", 45.57,"Festing","Dnk",null);
+        Konto.add(konto1);
+        Konto.add(konto2);
+        when(sjekk.loggetInn()).thenReturn("Ikke innlogget");
+
+        // act
+        String resultat = adminKontoController.slettKonto("7384938320");
 
         // assert
         assertNull(resultat);
