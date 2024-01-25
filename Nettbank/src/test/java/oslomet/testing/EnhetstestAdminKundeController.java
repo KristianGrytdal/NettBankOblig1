@@ -53,10 +53,93 @@ public class EnhetstestAdminKundeController {
         when(repository.hentAlleKunder()).thenReturn(Kunde);
 
         // act
-        List<Kunde> resultat = repository.hentAlleKunder();
+        List<Kunde> resultat = adminKundeController.hentAlle();
 
         // assert
         assertEquals(Kunde, resultat);
+
+    }
+    @Test
+    public void hentAlle_ikkeLoggetInn(){
+        // arrange
+
+        when(sjekk.loggetInn()).thenReturn(null);
+
+        // act
+        List<Kunde> resultat = adminKundeController.hentAlle();
+
+        // assert
+        assertNull(resultat);
+
     }
 
+    // ......................... Lagre ..................... //
+    @Test
+    public void lagreKunde_loggetInn(){
+        // arrange
+        List<Kunde> Kunde = new ArrayList<>();
+        Kunde kunde1 = new Kunde("84957293837","Hans","Zimmerman","Skogata 12","2100","Skarnes","273829483","Hei");
+        Kunde kunde2 = new Kunde("72837462872","Per","Sleip","Oslogata 12","0110","Oslo","837436523","Hei2");
+        Kunde.add(kunde1);
+        Kunde.add(kunde2);
+
+        when(sjekk.loggetInn()).thenReturn("01010110523");
+
+        when(repository.registrerKunde((any(Kunde.class)))).thenReturn("OK");
+
+        // act
+        String resultat = adminKundeController.lagreKunde(kunde1);
+
+        // assert
+        assertEquals(resultat, "OK");
+    }
+
+    @Test
+    public void lagreKunde_IkkeLoggetInn(){
+        // arrange
+
+        when(sjekk.loggetInn()).thenReturn(null);
+
+        // act
+        List<Kunde> resultat = adminKundeController.hentAlle();
+
+        // assert
+        assertNull(resultat);
+
+    }
+
+    // ......................... HentAlle ..................... //
+    @Test
+    public void endre_loggetInn(){
+        // arrange
+        List<Kunde> Kunde = new ArrayList<>();
+        Kunde kunde1 = new Kunde("84957293837","Hans","Zimmerman","Skogata 12","2100","Skarnes","273829483","Hei");
+        Kunde kunde2 = new Kunde("72837462872","Per","Sleip","Oslogata 12","0110","Oslo","837436523","Hei2");
+        Kunde.add(kunde1);
+        Kunde.add(kunde2);
+
+        when(sjekk.loggetInn()).thenReturn("01010110523");
+
+        when(repository.hentAlleKunder()).thenReturn(Kunde);
+
+        // act
+        List<Kunde> resultat = adminKundeController.hentAlle();
+
+        // assert
+        assertEquals(Kunde, resultat);
+
+    }
+    @Test
+    public void endre_ikkeLoggetInn(){
+        // arrange
+
+        when(sjekk.loggetInn()).thenReturn(null);
+
+        // act
+        List<Kunde> resultat = adminKundeController.hentAlle();
+
+        // assert
+        assertNull(resultat);
+
+    }
 }
