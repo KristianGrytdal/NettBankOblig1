@@ -15,8 +15,7 @@ import oslomet.testing.Sikkerhet.Sikkerhet;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -40,11 +39,38 @@ public class EnhetstestBankController {
     @Test
     public void hentTransaksjoner_loggetInn() {
 
+        //arrange
+        List<Transaksjon> transaksjoner = new ArrayList<>();
+        Transaksjon enTransaksjon = new Transaksjon(1, "12423423", 100.00, "11.12.2023", "hello", "avventer", "98765432");
+        transaksjoner.add(enTransaksjon);
+
+        Konto forventetKonto = new Konto("12330495", "0987654321", 2.35, "?", "NOK", transaksjoner);
+
+        when(sjekk.loggetInn()).thenReturn("934856947356");
+        when(repository.hentTransaksjoner(any(), any(), any())).thenReturn(forventetKonto);
+
+        //act
+        Konto faktiskKonto = bankController.hentTransaksjoner("kontoNr", "fraDato", "tilDato");
+
+
+        //assert
+        assertNotNull(faktiskKonto);
+        assertEquals(forventetKonto, faktiskKonto);
+
     }
 
     @Test
     public void hentTransaksjoner_IkkeLoggetnn() {
 
+        //arrange
+        when(sjekk.loggetInn()).thenReturn(null);
+
+        //act
+        Konto kontoResultat = bankController.hentTransaksjoner("kontonr", "43532", "343534");
+
+
+        //assert
+        assertNull(kontoResultat);
     }
 
     // ......................... HentKonti ..................... //
@@ -247,11 +273,36 @@ public class EnhetstestBankController {
     @Test
     public void endreKundeInfo_LoggetInn(){
 
+        //arrange
+        Kunde enKunde = new Kunde("320942", "Julie", "Andreus", "Gøteborggata 19", "0566", "Oslo", "97434826", "hejhej");
+
+        when(sjekk.loggetInn()).thenReturn("4309834");
+        when(repository.endreKundeInfo(any())).thenReturn(enKunde.toString());
+
+        //act
+        String resultat = bankController.endre(enKunde);
+
+        //assert
+        assertEquals(enKunde.toString(), resultat);
+
     }
 
     @Test
     public void endreKundeInfo_IkkeLoggetInn(){
 
+        Kunde enKunde = new Kunde("320942", "Julie", "Andreus", "Gøteborggata 19", "0566", "Oslo", "97434826", "hejhej");
+
+        //arrange
+        when(sjekk.loggetInn()).thenReturn(null);
+
+
+        //act
+        String resultat = bankController.endre(enKunde);
+
+        //assert
+        assertNull(resultat);
+
     }
+
 }
 
